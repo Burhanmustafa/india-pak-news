@@ -644,7 +644,7 @@ function App() {
 
         console.log('Fetching news data...');
         const apiUrl = process.env.REACT_APP_API_URL || 
-          (window.location.hostname === 'localhost' ? 'http://localhost:5001' : 'https://india-pak-news.onrender.com');
+          (window.location.hostname === 'localhost' ? 'http://localhost:5001' : 'https://web-production-a2a0c.up.railway.app');
         console.log('API URL being used:', apiUrl);
         const fullUrl = `${apiUrl}/api/news`;
         console.log('Full API URL:', fullUrl);
