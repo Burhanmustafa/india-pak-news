@@ -29,7 +29,7 @@ except ImportError:
     logger.warning("OpenAI not installed - using free summarization only")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["*"], allow_headers=["Content-Type"], methods=["GET", "POST", "OPTIONS"])
 
 # Load environment variables
 load_dotenv()
