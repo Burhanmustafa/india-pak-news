@@ -23,6 +23,35 @@ This application demonstrates advanced **full-stack development**, **machine lea
 
 ---
 
+## Demo Video and Screenshots
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=M4Zq5vU7XXc">
+    <img src="https://img.youtube.com/vi/M4Zq5vU7XXc/hqdefault.jpg" width="700" />
+  </a>
+</p>
+
+PLEASE WATCH THE DEMO ON YOUTUBE!
+
+<h2>📸 Screenshot</h2>
+<p align="center">
+  <img src="media/IndoPakNewsSS1.png" width="700" />
+</p>
+
+<p align="center">
+  <img src="media/IndoPakNewsSS2.png" width="700" />
+</p>
+
+<p align="center">
+  <img src="media/IndoPakNewsSS3.png" width="700" />
+</p>
+
+<p align="center">
+  <img src="media/IndoPakNewsSS4.png" width="700" />
+</p>
+
+---
+
 ## 🛠️ **Tech Stack & Architecture**
 
 ### **Frontend Technologies**
