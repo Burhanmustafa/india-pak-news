@@ -751,6 +751,20 @@ function App() {
               <AnimatedTitle variant="h3" component="h1" gutterBottom align="center" sx={{ mb: 6 }} darkMode={darkMode}>
                 India-Pakistan Conflict Update
               </AnimatedTitle>
+              
+              <Typography 
+                variant="h6" 
+                align="center" 
+                sx={{ 
+                  mb: 4, 
+                  color: darkMode ? '#b0b0b0' : '#666',
+                  fontStyle: 'italic',
+                  fontWeight: 400,
+                  opacity: 0.8
+                }}
+              >
+                Coded by Burhan Mustafa
+              </Typography>
 
               {error ? (
                 <Zoom in={true} timeout={600}>
