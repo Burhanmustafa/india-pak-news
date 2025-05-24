@@ -644,8 +644,8 @@ function App() {
 
         console.log('Fetching news data...');
         const apiUrl = process.env.REACT_APP_API_URL || 
-          (window.location.hostname === 'localhost' ? 'http://localhost:5001' : '/api');
-        const response = await axios.get<NewsData | ErrorResponse>(`${apiUrl}${apiUrl.endsWith('/api') ? '' : '/api'}/news`);
+          (window.location.hostname === 'localhost' ? 'http://localhost:5001' : 'https://india-pak-news.onrender.com');
+        const response = await axios.get<NewsData | ErrorResponse>(`${apiUrl}/api/news`);
         console.log('Response received:', response.data);
 
         if ('error' in response.data) {
