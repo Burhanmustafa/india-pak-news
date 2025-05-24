@@ -5,12 +5,6 @@ from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article
-try:
-    import openai
-    OPENAI_AVAILABLE = True
-except ImportError:
-    OPENAI_AVAILABLE = False
-    logger.warning("OpenAI not installed - using free summarization only")
 from dotenv import load_dotenv
 import logging
 import re
@@ -22,9 +16,17 @@ import json
 import urllib.parse
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Configure logging
+# Configure logging first
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Try to import OpenAI (optional)
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    logger.warning("OpenAI not installed - using free summarization only")
 
 app = Flask(__name__)
 CORS(app)
