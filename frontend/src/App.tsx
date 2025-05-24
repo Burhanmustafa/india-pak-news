@@ -643,7 +643,8 @@ function App() {
         }
 
         console.log('Fetching news data...');
-        const response = await axios.get<NewsData | ErrorResponse>('http://localhost:5001/api/news');
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        const response = await axios.get<NewsData | ErrorResponse>(`${apiUrl}/api/news`);
         console.log('Response received:', response.data);
 
         if ('error' in response.data) {
