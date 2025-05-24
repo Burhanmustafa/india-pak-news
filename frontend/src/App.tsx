@@ -763,7 +763,7 @@ function App() {
                   opacity: 0.8
                 }}
               >
-                Coded by Burhan Mustafa
+                Coded by Burhan Mustafa.
               </Typography>
 
               {error ? (
