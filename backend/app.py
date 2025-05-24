@@ -5,7 +5,12 @@ from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article
-import openai
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    logger.warning("OpenAI not installed - using free summarization only")
 from dotenv import load_dotenv
 import logging
 import re
@@ -27,14 +32,15 @@ CORS(app)
 # Load environment variables
 load_dotenv()
 
-# Configure OpenAI
+# Configure OpenAI (optional - will use free summarization if not available)
 openai_api_key = os.getenv('OPENAI_API_KEY')
-if not openai_api_key:
-    logger.error("OpenAI API key not found in environment variables")
-    raise ValueError("OpenAI API key not found")
-
-# Create OpenAI client (v1.x pattern)
-client = openai.OpenAI(api_key=openai_api_key)
+if not openai_api_key or not OPENAI_AVAILABLE:
+    logger.warning("OpenAI not available - using free summarization only")
+    client = None
+else:
+    # Create OpenAI client (v1.x pattern)
+    client = openai.OpenAI(api_key=openai_api_key)
+    logger.info("OpenAI API key found - backup AI summarization available")
 
 def fetch_news_articles():
     # List of news sources to scrape
@@ -366,31 +372,39 @@ def extract_impact_analysis(text_sources):
 
 def generate_openai_summary(articles):
     """
-    Backup OpenAI summary generation (will fail gracefully if quota exceeded)
+    Backup OpenAI summary generation (will fail gracefully if quota exceeded or API not available)
     """
-    combined_text = "\n\n".join([f"Title: {a['title']}\n{a['text']}" for a in articles])
-    
-    prompt = f"""Please provide a comprehensive 350-word summary of the current Pakistan-India conflict based on the following recent news articles. Focus on:
-    1. Recent developments and key events
-    2. Impact on civilians and military situation
-    3. International response and mediation efforts
-    4. Current state of the conflict
-    
-    Articles:
-    {combined_text}
-    """
-    
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are a professional news analyst specializing in South Asian geopolitics. Provide clear, unbiased analysis of the situation."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=500,
-        temperature=0.7
-    )
-    
-    return response.choices[0].message.content
+    if client is None:
+        logger.info("OpenAI client not available, skipping AI summary")
+        return None
+        
+    try:
+        combined_text = "\n\n".join([f"Title: {a['title']}\n{a['text']}" for a in articles])
+        
+        prompt = f"""Please provide a comprehensive 350-word summary of the current Pakistan-India conflict based on the following recent news articles. Focus on:
+        1. Recent developments and key events
+        2. Impact on civilians and military situation
+        3. International response and mediation efforts
+        4. Current state of the conflict
+        
+        Articles:
+        {combined_text}
+        """
+        
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a professional news analyst specializing in South Asian geopolitics. Provide clear, unbiased analysis of the situation."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=500,
+            temperature=0.7
+        )
+        
+        return response.choices[0].message.content
+    except Exception as e:
+        logger.info(f"OpenAI summary failed, using free alternative: {str(e)}")
+        return None
 
 def get_verified_youtube_videos():
     """
